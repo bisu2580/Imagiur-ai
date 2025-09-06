@@ -1,4 +1,4 @@
-# 🖼️ Imagiur
+![A chill developer](https://user-images.githubusercontent.com/74038190/212749171-b84692a8-2b04-4e3b-93ca-ac14705da224.gif)
 
 ![React](https://img.shields.io/badge/Frontend-React-61DAFB?logo=react&logoColor=white)  
 ![Vite](https://img.shields.io/badge/Build-Vite-646CFF?logo=vite&logoColor=white)  
@@ -14,19 +14,19 @@
 
 ### 🏠 Homepage
 
-![Homepage Screenshot](assets/homepage.png)
+![Homepage Screenshot](./frontend/src/assets/homepage.png)
 
 ### 🎨 Image Generator
 
-![Image Generator Screenshot](assets/image-generator.png)
+![Image Generator Screenshot](./frontend/src/assets/imagegen.png)
 
 ### 🤖 AI Chat Assistant
 
-![Chat Screenshot](assets/chat.png)
+![Chat Screenshot](./frontend/src/assets/chatsection.png)
 
 ### 📊 Dashboard
 
-![Dashboard Screenshot](assets/dashboard.png)
+![Dashboard Screenshot](./frontend/src/assets/dashboardsection.png)
 
 ## ✨ Features
 
@@ -159,7 +159,7 @@ imagiur/
 
 ## 👨‍💻 Developer Info
 
-![Profile Picture](https://avatars.githubusercontent.com/u/bisu2580?v=4)
+![Profile Picture](https://github.com/bisu2580.png)
 
 ### Hi 👋, I'm **Biswajit Sahoo**
 
@@ -176,9 +176,9 @@ imagiur/
 ### 📬 Connect With Me
 
 - 📧 [Email](mailto:biswajitsahoo1424@gmail.com)
-- 💼 [LinkedIn](https://linkedin.com/in/biswajitsahoo)
-- 🖥️ [GitHub](https://github.com/biswajit1424)
-- 🐦 [Twitter](https://twitter.com/biswajit)
+- 💼 [LinkedIn](https://www.linkedin.com/in/biswajit-sahoo3/)
+- 🖥️ [GitHub](https://github.com/bisu2580)
+- 🐦 [Twitter](https://twitter.com/sahoobiswajit13)
 
 ### 📊 GitHub Stats
 
