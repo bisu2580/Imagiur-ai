@@ -1,0 +1,133 @@
+/* Add this to your main CSS file (e.g., index.css) */
+* {
+  scroll-behavior: smooth;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Width of the entire scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05); /* Color of the tracking area */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(
+    to bottom,
+    #8b5cf6,
+    /* Purple-500 */ #d946ef /* Fuchsia-500 */
+  ); /* A beautiful gradient for the thumb */
+  border-radius: 10px; /* Roundness of the scroll thumb */
+  border: 2px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-image: linear-gradient(
+    to bottom,
+    #a78bfa,
+    /* Purple-400 */ #e879f9 /* Fuchsia-400 */
+  ); /* Lighter gradient on hover */
+}
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #8b5cf6 rgba(255, 255, 255, 0.05);
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Container for the animated gradient border */
+.gradient-border {
+  position: relative;
+  border-radius: 0.75rem; /* 12px */
+  padding: 1px; /* This padding creates the space for the border */
+  overflow: hidden;
+  background-color: #1a1a1a; /* Dark background */
+}
+
+/* The pseudo-element that creates the rotating gradient */
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #a855f7 0deg,
+    /* Purple */ #ec4899 90deg,
+    /* Pink */ #3b82f6 180deg,
+    /* Blue */ #a855f7 360deg
+  );
+  animation: rotate-gradient 3s linear infinite;
+}
+
+/* The inner content div that sits on top of the gradient */
+.gradient-border-inner {
+  position: relative;
+  padding: 0.75rem 1rem; /* 12px 16px */
+  /* background-color: #1a1a1a; Match the outer background */
+  border-radius: 0.7rem; /* Slightly smaller than the parent's border-radius */
+}
+
+@keyframes rotate-gradient {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Pulse animation for the "Generating..." text */
+@keyframes pulse-text {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse-text {
+  animation: pulse-text 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@media (min-width: 1024px) {
+  .menu {
+    display: none;
+  }
+}
+@media (max-width: 1023px) {
+  .menu {
+    position: sticky;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sidebar {
+    overflow-y: auto;
+    /* scrollbar-width: thin;
+    scrollbar-color: #8b5cf6 rgba(255, 255, 255, 0.05); */
+  }
+}
+.shimmer-bg {
+  background-image: linear-gradient(
+    110deg,
+    #1f2937 8%,
+    #374151 18%,
+    #1f2937 33%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 4.5s linear infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}

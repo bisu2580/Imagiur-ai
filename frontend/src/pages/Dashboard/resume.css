@@ -1,0 +1,238 @@
+/* Main container */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.printable-resume {
+  position: absolute;
+  top: 0;
+  left: -9999px; /* Pushes the element far off-screen */
+  width: 210mm; /* A4 width for consistent rendering */
+  background-color: white;
+  color: black;
+}
+.resume-main {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+  /* overflow-x: hidden; */
+  background: #f9fafb;
+}
+
+.resume-container {
+  width: 210mm;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #1f2937;
+  padding: 1.75rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  min-height: 297mm;
+  border-radius: 6px;
+  /* aspect-ratio: 210/297; */
+}
+
+/* Header */
+.resume-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 1px solid #9ca3af;
+  padding-bottom: 0.5rem;
+}
+
+.resume-name {
+  font-size: 2.25rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #111827;
+  margin: 0;
+}
+
+.resume-title {
+  margin-top: 0.1rem;
+  font-size: 1.25rem;
+  color: #6d28d9;
+}
+
+.resume-contact {
+  margin-top: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  color: #4b5563;
+  gap: 0.25rem;
+}
+.resume-contact-container {
+  display: flex;
+  gap: 0.75rem;
+}
+.resume-contact a span {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.resume-contact a span:hover {
+  text-decoration: underline;
+}
+
+/* Profile Image */
+.resume-image {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.resume-image.bordered {
+  border: 4px solid #e5e7eb;
+}
+
+.resume-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Body */
+
+.resume-section {
+  border-bottom: 1px solid #9ca3af;
+  padding-bottom: 0.5rem;
+}
+
+.resume-section h2 {
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5b21b6;
+  margin-bottom: 0.25rem;
+}
+
+.resume-heading {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.resume-section p {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 300;
+}
+
+.resume-section .italic {
+  font-style: italic;
+  color: #4b5563;
+}
+
+.resume-section .muted {
+  color: #6b7280;
+}
+
+.resume-section ul {
+  list-style: none;
+  font-size: 0.875rem;
+  padding: 0;
+  margin: 0;
+  color: #374151;
+  font-weight: 300;
+}
+
+.resume-section ul li {
+  margin-bottom: 0.25rem;
+  position: relative;
+  padding-left: 1.2em; /* space for bullet */
+  line-height: 1.5; /* improve readability */
+}
+.resume-section ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: none;
+  color: #555;
+  font-size: 0.875rem;
+}
+
+/* Projects strong description */
+.resume-section .strong {
+  font-weight: 500;
+}
+
+/* Certifications */
+.cert-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.cert-item h3 {
+  font-size: 0.875rem;
+  text-decoration: underline;
+  font-weight: 500;
+  margin: 0;
+}
+
+.cert-item p {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+.certification-heading {
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5b21b6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
+}
+.projects {
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-section,
+.certification-section,
+.resume-header {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin-bottom: 0.5rem;
+}
+@media print {
+  body {
+    background: none;
+  }
+  .resume-container {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    box-shadow: none;
+    border-radius: 0;
+    page-break-inside: avoid;
+    page-break-after: auto;
+    break-inside: avoid;
+  }
+
+  .resume-container:last-child {
+    page-break-after: auto;
+  }
+
+  .resume-section,
+  .certification-section,
+  .resume-header {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+}

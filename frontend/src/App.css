@@ -1,0 +1,9 @@
+* {
+  scroll-behavior: smooth;
+}
+.app-bg {
+  background: radial-gradient(at 3% 88%, #16213e 0px, transparent 50%),
+    radial-gradient(at 22% 52%, #0f3460 0px, transparent 50%),
+    radial-gradient(at 58% 26%, #533483 0px, transparent 50%),
+    radial-gradient(at 44% 57%, #e94560 0px, transparent 50%), #16213e;
+}

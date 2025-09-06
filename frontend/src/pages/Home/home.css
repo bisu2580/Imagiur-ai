@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+.heading {
+  font-family: "Montserrat", sans-serif;
+}
+
+.cta-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(90deg, #c026d3, #7c3aed, #2563eb);
+  border: none;
+  border-radius: 0.75rem; /* 12px */
+  cursor: pointer;
+  overflow: hidden; /* Crucial for the shine effect */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
+}
+
+.cta-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(124, 58, 237, 0.6);
+}
+
+/* Shine effect pseudo-element */
+.cta-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.cta-btn:hover::before {
+  left: 100%;
+}
+
+@media (max-width: 768px) {
+  .cta-btn {
+    padding: 0.65rem 1.25rem;
+    font-size: 1rem;
+  }
+}

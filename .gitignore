@@ -1,28 +1,57 @@
-# Firebase build and deployment files
-/firebase-debug.log
-/firebase-debug.*.log
-.firebaserc
-
-# Firebase Hosting
-/firebase.json
-*.cache
-hosting/.cache
-
-# Firebase Functions
-/functions/node_modules/
-/functions/.env
-/functions/package-lock.json
-
-# Firebase Emulators
-/firebase-*.zip
-/.firebase/
-/emulator-ui/
+# =========================
+# Root
+# =========================
+node_modules/
+.env
+.DS_Store
 
 # Logs
+logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Environment files (local configs)
-/.env.*
+# Editor junk
+.vscode/
+.idea/
+*.swp
+
+# =========================
+# Frontend (React + Vite)
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.DS_Store
+
+# Vite cache
+frontend/.vite/
+
+# =========================
+# Backend (Node + Express + Firebase)
+# =========================
+backend/node_modules/
+backend/.env
+backend/.env.local
+backend/.DS_Store
+
+# Firebase Admin SDK key (sensitive!)
+backend/firebaseServiceAccountKey.json
+
+# Build & temp
+backend/dist/
+backend/build/
+backend/coverage/
+backend/tmp/
+backend/.cache/
+
+# =========================
+# Misc
+# =========================
+*.tar
+*.zip
+*.tgz
