@@ -1,4 +1,11 @@
-import { Loader2, Wand2, ImageIcon, Sparkles, Coins } from "lucide-react";
+import {
+  Loader2,
+  Wand2,
+  ImageIcon,
+  Sparkles,
+  Coins,
+  Infinity,
+} from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { STYLES } from "../../data";
@@ -128,10 +135,10 @@ const Generate = () => {
                 <span className="font-medium">Credits Left</span>
               </div>
               <span className="text-xl text-amber-400 font-bold">
-                {credits}
+                {user?.plan === "UNLIMITED" ? <Infinity /> : credits}
               </span>
             </div>
-            {credits <= 0 && (
+            {credits <= 0 && user?.plan !== "UNLIMITED" && (
               <p className="text-xs text-amber-400 text-center -mt-3">
                 Buy more credits to generate image!!
               </p>

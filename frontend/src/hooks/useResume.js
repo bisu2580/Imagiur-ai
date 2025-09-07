@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 const initialEducation = { school: "", degree: "", year: "" };
 const initialProject = { name: "", description: "", points: [""] };
 const initialCertification = { name: "", year: "" };
@@ -25,13 +26,24 @@ export const useResume = () => {
   };
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfile((prev) => ({ ...prev, imageUrl: reader.result }));
-      };
-      reader.readAsDataURL(file);
+    if (!file) {
+      toast.error("No file selected or access denied.");
+      return;
     }
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfile((prev) => ({ ...prev, imageUrl: reader.result }));
+      toast.success("Image Added!!");
+    };
+    reader.onerror = (error) => {
+      console.error("FileReader error:", error);
+      toast.error("Error reading the file.");
+    };
+    reader.readAsDataURL(file);
   };
   const handleArrayChange = (setter, index, e) => {
     const { name, value } = e.target;

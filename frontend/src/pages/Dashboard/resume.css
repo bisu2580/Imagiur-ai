@@ -236,3 +236,8 @@
     margin-bottom: 1rem;
   }
 }
+@media (max-width: 1023px) {
+  .resume-main {
+    background: transparent;
+  }
+}

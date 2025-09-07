@@ -30,7 +30,11 @@ export default function Dashboard() {
 
   const handleUpload = async (e) => {
     const file = e.target.files ? e.target.files[0] : null;
-    if (!file) return;
+    if (!file) {
+      toast.error("No file Selected");
+      setIsModalOpen(false);
+      return;
+    }
     setLoading(true);
     setIsModalOpen(false);
     try {
@@ -43,7 +47,6 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
-
   const handleSignOut = async () => {
     try {
       await signOutUser();
@@ -53,7 +56,6 @@ export default function Dashboard() {
       console.error("Error signing out:", error);
     }
   };
-
   const handleConfirmUpgrade = async (selectedAmount) => {
     if (!user) {
       toast.error("Please Sign In or Signup first to upgrade your plan.");
@@ -65,7 +67,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-950 via-gray-900 to-black text-gray-100 flex flex-col relative hide-scrollbar">
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-950 via-gray-900 to-black text-gray-100 flex flex-col lg:flex-row lg:h-screen lg:overflow-hidden relative hide-scrollbar">
       {/* Top mobile bar */}
       <div className="menu top-0 z-40 px-4 py-3 border-b border-white/5 backdrop-blur supports-[backdrop-filter]:bg-black/30">
         <button

@@ -187,7 +187,7 @@ export default function OverviewSection() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center flex flex-col justify-center items-center">
                   <div className="text-3xl font-bold text-indigo-300">
-                    {user?.plan === "INFINITY" ? (
+                    {user?.plan === "UNLIMITED" ? (
                       <Infinity className="size-10" />
                     ) : (
                       user?.credits || 0

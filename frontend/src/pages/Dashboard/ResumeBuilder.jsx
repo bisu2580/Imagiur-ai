@@ -124,7 +124,7 @@ const ResumeBuilder = () => {
     <div className="flex flex-col lg:flex-row h-screen w-full bg-[#0a001a] text-white hide-scrollbar">
       {/* --- Left Panel: Controls --- */}
       <aside
-        className="lg:w-1/3 w-full bg-black/20 p-4 md:p-6 border-r border-white/10 overflow-y-auto custom-scrollbar space-y-3 lg:space-y-8"
+        className="lg:w-1/3 w-full bg-black/20 p-4 md:p-6 border-r border-white/10 lg:overflow-y-auto custom-scrollbar space-y-3 lg:space-y-8"
         style={{
           WebkitOverflowScrolling: "touch",
           overscrollBehaviorY: "contain",
@@ -439,7 +439,7 @@ const ResumeBuilder = () => {
       </aside>
 
       <main className="resume-main custom-scrollbar">
-        <div ref={resumeRef} className="resume-container lg:block hidden">
+        <div ref={resumeRef} className="resume-container hidden lg:block">
           {/* Header */}
           <header className="resume-header">
             <div className="resume-info">
