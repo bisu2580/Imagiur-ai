@@ -7,7 +7,7 @@ export const generateImage = async (prompt, model, resolution = "512x512") => {
   }
   const idToken = await user.getIdToken();
   const response = await fetch(
-    import.meta.env.VITE_BACKEND_URL + "/api/generate-image",
+    `${import.meta.env.VITE_BACKEND_URL}/api/generate-image`,
     {
       method: "POST",
       headers: {

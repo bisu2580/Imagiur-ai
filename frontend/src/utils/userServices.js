@@ -14,7 +14,7 @@ export const uploadProfileImage = async (file) => {
   formData.append("profileImage", file);
   const idToken = await user.getIdToken();
   const response = await fetch(
-    import.meta.env.VITE_BACKEND_URL + "/api/upload-image",
+    `${import.meta.env.VITE_BACKEND_URL}/api/upload-image`,
     {
       method: "POST",
       headers: {

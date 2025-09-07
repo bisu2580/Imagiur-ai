@@ -12,7 +12,7 @@ export const processPayment = async (selectedAmount, user) => {
 
     // 2. Create a Razorpay Order on the backend (send amount to backend)
     const orderResponse = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/api/payments/create-razorpay-order",
+      `${import.meta.env.VITE_BACKEND_URL}/api/payments/create-razorpay-order`,
       {
         method: "POST",
         headers: {
@@ -38,8 +38,9 @@ export const processPayment = async (selectedAmount, user) => {
       handler: async function (response) {
         try {
           const verificationResponse = await fetch(
-            import.meta.env.VITE_BACKEND_URL +
-              "/api/payments/verify-razorpay-payment",
+            `${
+              import.meta.env.VITE_BACKEND_URL
+            }/api/payments/verify-razorpay-payment`,
             {
               method: "POST",
               headers: {

@@ -73,7 +73,7 @@ const Login = () => {
       }
       const token = await user.getIdToken();
       await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/api/auth/verify-email",
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email`,
         {
           displayName: user.displayName,
           photoURL: user.photoURL,
@@ -122,7 +122,7 @@ const Login = () => {
         const idToken = await user.getIdToken();
 
         const response = await fetch(
-          import.meta.env.VITE_BACKEND_URL + "/api/users/signin",
+          `${import.meta.env.VITE_BACKEND_URL}/api/users/signin`,
           {
             method: "POST",
             headers: {
@@ -135,6 +135,7 @@ const Login = () => {
             }),
           }
         );
+        console.log(response);
         if (!response.ok) {
           const errorResult = await response.json();
           throw new Error(errorResult.error || "Server error during sign-in.");
