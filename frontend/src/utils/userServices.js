@@ -13,16 +13,13 @@ export const uploadProfileImage = async (file) => {
   const formData = new FormData();
   formData.append("profileImage", file);
   const idToken = await user.getIdToken();
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/upload-image`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: formData,
-    }
-  );
+  const response = await fetch(`/api/upload-image`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: formData,
+  });
 
   const result = await response.json();
 

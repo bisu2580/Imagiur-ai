@@ -1,7 +1,7 @@
 import { auth, db } from "../config/firebase.js";
 import { doc, updateDoc } from "firebase/firestore";
 
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+// const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const generateBio = async (fullname) => {
   if (!fullname) {
@@ -15,7 +15,7 @@ export const generateBio = async (fullname) => {
   const idToken = await user.getIdToken();
   const prompt = `Generate a short, creative, and professional bio (around 20-30 words) for a person named ${fullname}.`;
 
-  const response = await fetch(`${API_BASE_URL}/api/generate-bio`, {
+  const response = await fetch(`/api/generate-bio`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
