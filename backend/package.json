@@ -24,6 +24,6 @@
   },
   "scripts": {
     "start": "node server.js",
-    "build": "cd ../frontend && npm install && npm run build"
+    "build": "cd ../frontend && npm install && npm run build && cp -r dist ../backend/dist"
   }
 }
