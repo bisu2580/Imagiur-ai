@@ -59,7 +59,13 @@ export const useResume = () => {
     setter((prev) => [...prev, newItem]);
   };
   const removeArrayItem = (setter, index) => {
-    setter((prev) => prev.filter((_, i) => i !== index));
+    setter((prev) => {
+      if (prev.length === 1) {
+        toast.error("You must have at least one item!");
+        return prev;
+      }
+      prev.filter((_, i) => i !== index);
+    });
   };
 
   const handlePointChange = (setter, sectionIndex, pointIndex, value) => {

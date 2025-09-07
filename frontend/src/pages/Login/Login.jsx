@@ -114,13 +114,11 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       if (result?.user) {
         const user = result.user;
-        console.log(user);
         let photoURL = user.photoURL;
         if (photoURL) {
           photoURL = photoURL.split("=")[0] + "?sz=256";
         }
         const idToken = await user.getIdToken();
-
         const response = await fetch("/api/users/signin", {
           method: "POST",
           headers: {
@@ -132,7 +130,6 @@ const Login = () => {
             photoURL: photoURL,
           }),
         });
-        console.log(response);
         if (!response.ok) {
           const errorResult = await response.json();
           throw new Error(errorResult.error || "Server error during sign-in.");
