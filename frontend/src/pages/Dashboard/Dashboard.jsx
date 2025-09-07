@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import SideBar from "./Sidebar";
+import SideBar from "./SideBar";
 import OverviewSection from "./OverViewSection";
 import PricingSection from "./PricingSection";
 import GenerateText from "./GenerateText";
