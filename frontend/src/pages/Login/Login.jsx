@@ -121,17 +121,20 @@ const Login = () => {
         }
         const idToken = await user.getIdToken();
 
-        const response = await fetch("http://localhost:5000/api/users/signin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`,
-          },
-          body: JSON.stringify({
-            displayName: user.displayName,
-            photoURL: photoURL,
-          }),
-        });
+        const response = await fetch(
+          import.meta.env.VITE_BACKEND_URL + "/api/users/signin",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify({
+              displayName: user.displayName,
+              photoURL: photoURL,
+            }),
+          }
+        );
         if (!response.ok) {
           const errorResult = await response.json();
           throw new Error(errorResult.error || "Server error during sign-in.");

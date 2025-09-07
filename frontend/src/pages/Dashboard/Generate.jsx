@@ -50,7 +50,7 @@ const Generate = () => {
   };
 
   return (
-    <section className="bg-white/5 shadow-xl shadow-black/30 backdrop-blur rounded-2xl">
+    <section className="bg-white/5 shadow-xl shadow-black/30 backdrop-blur rounded-2xl min-h-screen">
       <div className="p-1 md:p-6 text-white w-full mx-auto" id="generate">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-2/5 flex flex-col gap-6 bg-black/10 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-2xl">
