@@ -75,7 +75,7 @@ const Generate = () => {
                 />
                 <button
                   onClick={handleGenerate}
-                  disabled={loading || credits <= 0 || !prompt.trim()}
+                  disabled={loading || (user?.plan!=="UNLIMITED" && credits <= 0 )|| !prompt.trim()}
                   className="flex items-center justify-center px-6 py-3 text-md font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-purple-500/30 active:scale-95 disabled:from-gray-700 disabled:to-gray-600 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none whitespace-nowrap"
                 >
                   {loading ? (

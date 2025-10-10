@@ -5,6 +5,7 @@ import {
   Infinity,
   ImageOff,
   Clock,
+  Trash,
 } from "lucide-react";
 import Card from "./Card";
 import SectionTitle from "./SectionTitle";
@@ -245,6 +246,16 @@ export default function OverviewSection() {
                   >
                     <Download className="w-4 h-4 text-blue-300 transition-colors duration-300 group-hover:text-white" />
                   </button>
+
+                  <button
+                    onClick={() =>
+                      toast.loading("Coming soon....")
+                    }
+                    className="absolute top-2 left-2 p-1 rounded-full bg-red-600/10 backdrop-blur-md shadow-md border border-red-500/20 transition-all duration-300 hover:scale-110 hover:bg-blue-500/30 hover:shadow-blue-400/40"
+                  >
+                    <Trash className="w-4 h-4 text-white transition-colors duration-300 group-hover:text-red-400"/>
+                  </button>
+                  
                 </div>
 
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

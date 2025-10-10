@@ -25,7 +25,7 @@ export default function Dashboard() {
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleUpload = async (e) => {
