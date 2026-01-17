@@ -26,6 +26,9 @@ app.use("/api/payments", paymentRoutes);
 app.get("/api/hello", (req, res) => {
   res.json({ message: "Hello from backend 🚀" });
 });
+app.all('*', (req, res) => {
+  res.redirect(301, 'https://imagiur-ai.vercel.app' + req.url);
+});
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
