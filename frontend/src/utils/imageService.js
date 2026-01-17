@@ -6,7 +6,7 @@ export const generateImage = async (prompt, model, resolution = "512x512") => {
     throw new Error("User is not authenticated.");
   }
   const idToken = await user.getIdToken();
-  const response = await fetch(`/api/generate-image`, {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/generate-image`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

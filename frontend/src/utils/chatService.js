@@ -22,14 +22,14 @@ const getAuthHeaders = async () => {
 
 export const fetchRecentChats = async () => {
   const headers = await getAuthHeaders();
-  const response = await fetch(`/api/recent-chats`, { headers });
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/recent-chats`, { headers });
   if (!response.ok) throw new Error("Failed to fetch recent chats.");
   return response.json();
 };
 
 export const fetchChatById = async (chatId) => {
   const headers = await getAuthHeaders();
-  const response = await fetch(`/api/chat/${chatId}`, {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/chat/${chatId}`, {
     headers,
   });
   if (!response.ok) throw new Error("Failed to load chat history.");
@@ -38,7 +38,7 @@ export const fetchChatById = async (chatId) => {
 
 export const generateResponse = async (prompt, history, chatId) => {
   const headers = await getAuthHeaders();
-  const response = await fetch(`/api/generate-text`, {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/generate-text`, {
     method: "POST",
     headers,
     body: JSON.stringify({

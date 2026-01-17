@@ -15,7 +15,7 @@ export const generateBio = async (fullname) => {
   const idToken = await user.getIdToken();
   const prompt = `Generate a short, creative, and professional bio (around 20-30 words) for a person named ${fullname}.`;
 
-  const response = await fetch(`/api/generate-bio`, {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/generate-bio`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

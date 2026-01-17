@@ -11,7 +11,7 @@ export const processPayment = async (selectedAmount, user) => {
     const idToken = await auth.currentUser.getIdToken();
 
     // 2. Create a Razorpay Order on the backend (send amount to backend)
-    const orderResponse = await fetch(`/api/payments/create-razorpay-order`, {
+    const orderResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/payments/create-razorpay-order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export const processPayment = async (selectedAmount, user) => {
       handler: async function (response) {
         try {
           const verificationResponse = await fetch(
-            `/api/payments/verify-razorpay-payment`,
+            `${import.meta.env.VITE_BACKEND_URL}/api/payments/verify-razorpay-payment`,
             {
               method: "POST",
               headers: {
