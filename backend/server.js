@@ -50,9 +50,9 @@ app.get("/api/hello", (req, res) => {
 // });
 
 // Replace your old app.all('*', ...) with this:
-app.all("/.*/", (req, res) => {
-  res.redirect(301, "https://imagiur-ai.vercel.app" + req.url);
-});
+// app.all(/.*/, (req, res) => {
+//   res.redirect(301, "https://imagiur-ai.vercel.app" + req.url);
+// });
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 export default app;
