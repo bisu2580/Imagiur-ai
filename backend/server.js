@@ -14,16 +14,17 @@ dotenv.config();
 const app = express();
 
 // server.js
-const corsOptions = {
-  origin: "https://imagiur-ai.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
-app.use(express.json());
+// const corsOptions = {
+//   origin: "https://imagiur-ai.vercel.app",
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   credentials: true,
+// };
+// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions));
+// app.use(express.json());
 
+app.use(cors());
 app.use("/api/users", signinRoute);
 app.use("/api/auth", authRoutes);
 app.use("/api", summerizeRoutes);
