@@ -11,6 +11,7 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import path from "path";
 dotenv.config();
+const app = express();
 
 // server.js
 const corsOptions = {
@@ -21,7 +22,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
-const app = express();
 app.use(express.json());
 
 app.use("/api/users", signinRoute);
