@@ -38,6 +38,6 @@ app.get("/api/hello", (req, res) => {
 //   res.sendFile(path.join(frontendDistPath, "index.html"));
 // });
 
-// const PORT = process.env.PORT || 4000;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-export default app;
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// export default app;

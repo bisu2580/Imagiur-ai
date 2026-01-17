@@ -7,6 +7,7 @@ import { db } from "../config/firebaseAdmin.js";
 
 const router = express.Router();
 const storage = multer.memoryStorage();
+const pollination_key = process.env.POLLINATIONS_API_KEY;
 const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 },
@@ -32,7 +33,7 @@ const uploadToCloudinary = async (imageBuffer) => {
         } else {
           resolve(result);
         }
-      }
+      },
     );
     uploadSteram.end(imageBuffer);
   });
@@ -51,7 +52,7 @@ const uploadprofileImage = async (imageBuffer) => {
         } else {
           resolve(result);
         }
-      }
+      },
     );
     uploadSteram.end(imageBuffer);
   });
@@ -92,12 +93,14 @@ router.post("/generate-image", verifyToken, async (req, res) => {
           .json({ error: "Not enough credits to generate an image" });
     }
 
-    const newPrompt = `${prompt} in ${model} style`;
-    const pollinationsUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(
-      newPrompt
-    )}?width=${width}%20&height=${height}`;
+    const finalPrompt = `${prompt} in ${model} style`;
+    const pollinationsUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(finalPrompt)}?width=${width}&height=${height}&model=flux&seed=${Math.floor(Math.random() * 1000000)}&nologo=true`;
 
-    const pollRes = await fetch(pollinationsUrl);
+    const pollRes = await fetch(pollinationsUrl, {
+      headers: {
+        Authorization: `Bearer ${process.env.POLLINATIONS_API_KEY}`,
+      },
+    });
 
     if (!pollRes.ok) {
       console.error(`Pollinations API error: ${pollRes.statusText}`);
@@ -122,7 +125,7 @@ router.post("/generate-image", verifyToken, async (req, res) => {
 
     const prevImages = userData.generatedImages || [];
     const updatedImages = [...prevImages, cloudinaryResult.secure_url].slice(
-      -20
+      -20,
     );
     const updateData = {
       activities: updatedActivities,
@@ -194,6 +197,6 @@ router.post(
         details: err.message,
       });
     }
-  }
+  },
 );
 export default router;

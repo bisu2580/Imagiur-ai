@@ -76,7 +76,7 @@ const Login = () => {
       }
       const token = await user.getIdToken();
       await axios.post(
-        `/api/auth/verify-email`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email`,
         {
           displayName: user.displayName,
           photoURL: user.photoURL,
