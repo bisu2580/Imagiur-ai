@@ -11,7 +11,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 router.post("/generate-text", verifyToken, async (req, res) => {
-  console.log("--- New Request Started ---");
+  // console.log("--- New Request Started ---");
   const { history, prompt, chatId } = req.body;
   const { uid } = req.user;
 
@@ -20,7 +20,7 @@ router.post("/generate-text", verifyToken, async (req, res) => {
     prompt,
     historyLength: history?.length,
   });
-  console.log("User UID:", uid);
+  // console.log("User UID:", uid);
 
   if (!prompt || !prompt.content) {
     console.error("Validation Failed: Prompt content missing");
@@ -39,15 +39,15 @@ router.post("/generate-text", verifyToken, async (req, res) => {
   );
 
   try {
-    console.log("Initializing Gemini Chat...");
+    // console.log("Initializing Gemini Chat...");
     const chat = model.startChat({ history: formattedHistory });
 
-    console.log("Sending message to Gemini:", prompt.content);
+    // console.log("Sending message to Gemini:", prompt.content);
     const result = await chat.sendMessage(prompt.content);
 
     const response = result.response;
     const text = response.text();
-    console.log("Gemini Response received:", text.substring(0, 50) + "...");
+    // console.log("Gemini Response received:", text.substring(0, 50) + "...");
 
     const updatedConversation = [
       ...history,
@@ -57,11 +57,11 @@ router.post("/generate-text", verifyToken, async (req, res) => {
 
     let currentChatId = chatId;
     if (currentChatId) {
-      console.log("Updating existing chat:", currentChatId);
+      // console.log("Updating existing chat:", currentChatId);
       const chatRef = db.collection("chats").doc(currentChatId);
       await chatRef.update({ messages: updatedConversation });
     } else {
-      console.log("Creating new chat document...");
+      // console.log("Creating new chat document...");
       const chatRef = await db.collection("chats").add({
         userId: uid,
         createdAt: new Date(),
