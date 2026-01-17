@@ -7,10 +7,7 @@
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": [
-            "https://imagiur-ai.vercel.app",
-            "https://imagiur-ai-backend.vercel.app"
-          ]
+          "value": "https://imagiur-ai-backend.vercel.app"
         },
         {
           "key": "Access-Control-Allow-Methods",
