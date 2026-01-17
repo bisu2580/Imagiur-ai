@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   MessageSquare,
   MessageSquareText,
-  Settings,
   Sparkles,
   User,
 } from "lucide-react";
@@ -16,6 +15,7 @@ import doraemon from "./assets/doraemon.jpg";
 import racoon from "./assets/racoon.jpg";
 import dashboard from "./assets/dashboard.jpg";
 import lion from "./assets/lion.jpg";
+import { FaYoutube } from "react-icons/fa";
 export const STYLES = [
   "Anime",
   "Japanese",
@@ -29,11 +29,12 @@ export const STYLES = [
 ];
 export const sidebar_nav = [
   { id: "overview", label: "Overview", icon: Home },
-  { id: "imageGenerations", label: "Image Generations", icon: Image },
-  { id: "textGenerations", label: "Chat with AI", icon: MessageSquareText },
+  { id: "image-generate", label: "Image Generations", icon: Image },
+  { id: "chat-with-ai", label: "Chat with AI", icon: MessageSquareText },
   { id: "pricing", label: "Pricing", icon: Sparkles },
-  { id: "resume_builder", label: "AI Resume Builder", icon: FileUser },
-  { id: "userDetails", label: "User Details", icon: User },
+  { id: "resume-builder", label: "Resume Builder", icon: FileUser },
+  // { id: "youtube-summerizer", label: "YT Video Summerizer", icon: FaYoutube },
+  { id: "user-details", label: "User Details", icon: User },
 ];
 export const plans = {
   freePremium: [
@@ -130,75 +131,75 @@ export const cardTitles = [
 ];
 export const gallery_images = [
   {
-    img: "https://pollinations.ai/prompt/cute%20ai%20cat",
+    img: "/carousel_images/ai_cat.jpg",
     prompt: "Cute AI Cat",
   },
   {
-    img: "https://pollinations.ai/prompt/cyberpunk%20dog",
+    img: "/carousel_images/cyberpunk_dog.jpg",
     prompt: "Cyberpunk Dog",
   },
   {
-    img: "https://pollinations.ai/prompt/robot%20holding%20flowers",
+    img: "/carousel_images/robot_holding_flowers.jpg",
     prompt: "Robot Holding Flowers",
   },
   {
-    img: "https://pollinations.ai/prompt/sci-fi%20mountains",
+    img: "/carousel_images/scifi_mountain.jpg",
     prompt: "Sci-Fi Mountains",
   },
   {
-    img: "https://pollinations.ai/prompt/galaxy%20in%20a%20bottle",
+    img: "/carousel_images/galaxy.jpg",
     prompt: "Galaxy in a Bottle",
   },
   {
-    img: "https://pollinations.ai/prompt/steampunk%20elephant",
+    img: "/carousel_images/elephant.jpg",
     prompt: "Steampunk Elephant",
   },
   {
-    img: "https://pollinations.ai/prompt/alien%20jungle",
+    img: "/carousel_images/alien_jungle.jpg",
     prompt: "Alien Jungle",
   },
   {
-    img: "https://pollinations.ai/prompt/futuristic%20cityscape",
+    img: "/carousel_images/city.jpg",
     prompt: "Futuristic Cityscape",
   },
   {
-    img: "https://pollinations.ai/prompt/ai%20generated%20portrait",
+    img: "/carousel_images/ai_generated_portrait.jpg",
     prompt: "AI Generated Portrait",
   },
   {
-    img: "https://pollinations.ai/prompt/robot%20cat%20sleeping",
+    img: "/carousel_images/robot_cat_sleeping.jpg",
     prompt: "Robot Cat Sleeping",
   },
   {
-    img: "https://pollinations.ai/prompt/fantasy%20castle%20in%20the%20clouds",
+    img: "/carousel_images/fantasy_clouds.jpg",
     prompt: "Fantasy Castle in the Clouds",
   },
   {
-    img: "https://pollinations.ai/prompt/glowing%20forest%20with%20fairies",
+    img: "/carousel_images/glowing_forest.jpg",
     prompt: "Glowing Forest with Fairies",
   },
   {
-    img: "https://pollinations.ai/prompt/underwater%20city",
+    img: "/carousel_images/under_city.jpg",
     prompt: "Underwater City",
   },
   {
-    img: "https://pollinations.ai/prompt/dragon%20made%20of%20stars",
+    img: "/carousel_images/star_dragon.jpg",
     prompt: "Dragon Made of Stars",
   },
   {
-    img: "https://pollinations.ai/prompt/cyberpunk%20samurai",
+    img: "/carousel_images/samurai.jpg",
     prompt: "Cyberpunk Samurai",
   },
   {
-    img: "https://pollinations.ai/prompt/futuristic%20robot%20market",
+    img: "/carousel_images/market.jpg",
     prompt: "Futuristic Robot Market",
   },
   {
-    img: "https://pollinations.ai/prompt/ancient%20temple%20in%20jungle",
+    img: "/carousel_images/forest_temple.jpg",
     prompt: "Ancient Temple in Jungle",
   },
   {
-    img: "https://pollinations.ai/prompt/robot%20playing%20guitar",
+    img: "/carousel_images/robot_guitar.jpg",
     prompt: "Robot Playing Guitar",
   },
 ];

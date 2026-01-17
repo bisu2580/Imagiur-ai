@@ -8,23 +8,46 @@ dotenv.config();
 
 const router = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
 router.post("/generate-text", verifyToken, async (req, res) => {
+  console.log("--- New Request Started ---");
   const { history, prompt, chatId } = req.body;
   const { uid } = req.user;
-  if (!prompt) {
-    return res.status(400).send({ error: "Prompt is required" });
+
+  console.log("Request Body:", {
+    chatId,
+    prompt,
+    historyLength: history?.length,
+  });
+  console.log("User UID:", uid);
+
+  if (!prompt || !prompt.content) {
+    console.error("Validation Failed: Prompt content missing");
+    return res.status(400).send({ error: "Prompt content is required" });
   }
+
+  // Gemini expects roles: "user" and "model"
   const formattedHistory = history.map((msg) => ({
     role: msg.role === "ai" ? "model" : "user",
     parts: [{ text: msg.content }],
   }));
+
+  console.log(
+    "Formatted History for Gemini:",
+    JSON.stringify(formattedHistory, null, 2),
+  );
+
   try {
+    console.log("Initializing Gemini Chat...");
     const chat = model.startChat({ history: formattedHistory });
+
+    console.log("Sending message to Gemini:", prompt.content);
     const result = await chat.sendMessage(prompt.content);
+
     const response = result.response;
     const text = response.text();
+    console.log("Gemini Response received:", text.substring(0, 50) + "...");
 
     const updatedConversation = [
       ...history,
@@ -34,19 +57,33 @@ router.post("/generate-text", verifyToken, async (req, res) => {
 
     let currentChatId = chatId;
     if (currentChatId) {
+      console.log("Updating existing chat:", currentChatId);
       const chatRef = db.collection("chats").doc(currentChatId);
       await chatRef.update({ messages: updatedConversation });
     } else {
+      console.log("Creating new chat document...");
       const chatRef = await db.collection("chats").add({
         userId: uid,
         createdAt: new Date(),
         messages: updatedConversation,
       });
       currentChatId = chatRef.id;
+      console.log("New chat created with ID:", currentChatId);
     }
+
+    console.log("Request successful, sending response back to client.");
     res.send({ role: "ai", content: text, chatId: currentChatId });
   } catch (err) {
-    console.error("Error generating content:", err.message);
+    // This will print the actual Gemini error (e.g., "Blocked by safety", "Invalid role")
+    console.error("CRITICAL ERROR in /generate-text:", err.message);
+
+    if (err.message.includes("429") || err.message.includes("quota")) {
+      return res.status(429).send({
+        error:
+          "AI Quota exceeded. Please try again in a few minutes or switch models.",
+      });
+    }
+
     res.status(500).send({ error: "Failed to generate content" });
   }
 });

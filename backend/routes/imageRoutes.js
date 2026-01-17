@@ -93,7 +93,7 @@ router.post("/generate-image", verifyToken, async (req, res) => {
     }
 
     const newPrompt = `${prompt} in ${model} style`;
-    const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(
+    const pollinationsUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(
       newPrompt
     )}?width=${width}%20&height=${height}`;
 

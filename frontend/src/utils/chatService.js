@@ -1,8 +1,17 @@
 import { auth } from "../config/firebase";
-// const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const getAuthHeaders = async () => {
-  const user = auth.currentUser;
+  const getCurrentUser = () => {
+    return new Promise((resolve) => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        unsubscribe();
+        resolve(user);
+      });
+    });
+  };
+  console.log("Current Firebase User:", auth.currentUser);
+  let user = auth.currentUser || (await getCurrentUser());
   if (!user) throw new Error("User not authenticated.");
   const idToken = await user.getIdToken();
   return {
@@ -41,6 +50,7 @@ export const generateResponse = async (prompt, history, chatId) => {
 
   const result = await response.json();
   if (!response.ok) {
+    console.error("Server Error Detail:", result);
     throw new Error(result.error || "An unknown server error occurred.");
   }
   return result;

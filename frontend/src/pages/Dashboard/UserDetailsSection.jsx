@@ -7,12 +7,10 @@ import UpgradeModal from "../../components/Modals/UpgradeModal";
 import { useAuth } from "../../hooks/useAuth";
 import { generateBio, updateUserProfile } from "../../utils/profileService";
 import { FALLBACK_IMAGE } from "../../constants/images";
+import { useOutletContext } from "react-router-dom";
 
-export default function UserDetailsSection({
-  setIsModalOpen,
-  loading,
-  handleConfirmUpgrade,
-}) {
+export default function UserDetailsSection() {
+  const { setIsModalOpen, loading, handleConfirmUpgrade } = useOutletContext();
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [upgradeAmount, setUpgradeAmount] = useState(null);

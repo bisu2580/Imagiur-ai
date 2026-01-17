@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./dashboard.css";
 import { sidebar_nav } from "../../data";
 import { LogOut, Gauge, Infinity } from "lucide-react";
@@ -7,8 +7,6 @@ import { FALLBACK_IMAGE } from "../../constants/images";
 import { useAuth } from "../../hooks/useAuth";
 
 const SideBar = ({
-  active,
-  setActive,
   onSignOut,
   sidebarOpen,
   setSidebarOpen,
@@ -16,7 +14,13 @@ const SideBar = ({
   loading,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
+
+  const isActive = (id) => {
+    return location.pathname.includes(id);
+  };
+
   return (
     <aside
       className={`${
@@ -78,12 +82,12 @@ const SideBar = ({
       {/* Nav */}
       <nav className="flex flex-col gap-1 p-3 relative">
         {sidebar_nav.map(({ id, label, icon: Icon }) => {
-          const activeState = active === id;
+          const activeState = isActive(id);
           return (
             <motion.button
               key={id}
               onClick={() => {
-                setActive(id);
+                navigate(`/dashboard/${id}`)
                 setSidebarOpen(false);
               }}
               whileHover={{ scale: 1.01 }}

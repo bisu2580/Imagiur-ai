@@ -4,9 +4,10 @@ import verifyToken from "../middleware/verifyToken.js";
 const router = express.Router();
 
 router.post("/verify-email", verifyToken, async (req, res) => {
-  const { uid, email, name, picture, email_verified } = req.user;
+  const { uid, email, name, email_verified } = req.user;
   const { displayName = "New User", photoURL = "" } = req.body;
 
+  console.log("User: ", req.user);
   if (!uid || !email) {
     return res.status(400).json({ error: "User ID and Email are required." });
   }

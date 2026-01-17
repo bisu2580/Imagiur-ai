@@ -1,25 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import fox from "../../assets/fox.png";
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
 import axios from "axios";
 import "./login.css";
 import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
-import { LogOut } from "lucide-react";
+import { Eye, EyeClosed, LogOut } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [seen, setSeen] = useState(false);
   const divRef = useRef(null);
   const [formData, setFormData] = useState({
     username: "",
@@ -28,6 +29,8 @@ const Login = () => {
     rememberMe: false,
   });
   const [error, setError] = useState({});
+
+  const passwordInputType = seen ? "text" : "password";
 
   const handleMouseMove = (e) => {
     const bounds = divRef.current.getBoundingClientRect();
@@ -73,7 +76,7 @@ const Login = () => {
       }
       const token = await user.getIdToken();
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-email`,
+        `/api/auth/verify-email`,
         {
           displayName: user.displayName,
           photoURL: user.photoURL,
@@ -119,17 +122,20 @@ const Login = () => {
           photoURL = photoURL.split("=")[0] + "?sz=256";
         }
         const idToken = await user.getIdToken();
-        const response = await fetch("/api/users/signin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${idToken}`,
-          },
-          body: JSON.stringify({
-            displayName: user.displayName,
-            photoURL: photoURL,
-          }),
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/users/signin`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify({
+              displayName: user.displayName,
+              photoURL: photoURL,
+            }),
+          }
+        );
         if (!response.ok) {
           const errorResult = await response.json();
           throw new Error(errorResult.error || "Server error during sign-in.");
@@ -145,9 +151,6 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-  };
-  const handleGithubSignin = () => {
-    toast.success("Coming Soon......");
   };
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -182,11 +185,7 @@ const Login = () => {
             images and credits
           </p>
           <div className="mt-8">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3209/3209265.png"
-              alt="Files"
-              className="w-32 md:w-40 mx-auto"
-            />
+            <img src={fox} alt="Files" className="w-32 md:w-44 mx-auto" />
           </div>
         </div>
 
@@ -244,7 +243,7 @@ const Login = () => {
             {/* <!-- Password --> */}
             <div className="relative">
               <input
-                type="password"
+                type={passwordInputType}
                 name="password"
                 onChange={handleInputChange}
                 placeholder="Password"
@@ -253,30 +252,16 @@ const Login = () => {
                 } focus:outline-none focus:ring-2 focus:ring-indigo-400 pr-10`}
                 value={formData.password}
               />
-              <span className="absolute right-3 top-3 text-gray-400 cursor-pointer">
-                👁
+              <span
+                className="absolute right-3 top-3 text-gray-400 cursor-pointer"
+                onClick={() => setSeen(!seen)}
+              >
+                {seen ? <EyeClosed /> : <Eye />}
               </span>
             </div>
             {error.password && (
               <p className="text-red-500 text-sm">{error.password}</p>
             )}
-            {/* <!-- Remember + Forgot --> */}
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="rememberMe"
-                  className="w-4 h-4 text-indigo-500 rounded border-gray-300"
-                  checked={formData.rememberMe}
-                  onChange={handleInputChange}
-                />
-                <span>Remember me</span>
-              </label>
-              <a href="#" className="text-indigo-500 hover:underline">
-                Forgot password?
-              </a>
-            </div>
-
             {/* <!-- Login Button --> */}
             <button
               type="submit"
@@ -303,18 +288,10 @@ const Login = () => {
               <button
                 type="button"
                 className="flex items-center justify-center gap-2 border border-gray-600 rounded-xl px-4 py-2 hover:bg-gray-800 w-full"
-                onClick={handleGithubSignin}
-              >
-                <FaGithub className="text-xl" />
-                <span>Github</span>
-              </button>
-              <button
-                type="button"
-                className="flex items-center justify-center gap-2 border border-gray-600 rounded-xl px-4 py-2 hover:bg-gray-800 w-full"
                 onClick={handleGoogleSignIn}
               >
                 <FcGoogle className="text-xl" />
-                <span>Google</span>
+                <span>Continue with Google</span>
               </button>
             </div>
 

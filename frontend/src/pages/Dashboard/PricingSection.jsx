@@ -2,12 +2,11 @@ import SectionTitle from "./SectionTitle";
 import Card from "./Card";
 import { useAuth } from "../../hooks/useAuth";
 import { CREDIT_PACKS, PLAN_DEFINITIONS } from "../../data";
+import { useOutletContext } from "react-router-dom";
 
-const PricingSection = ({
-  setSelectedAmount,
-  setIsUpgradeModalOpen,
-  handleConfirmUpgrade,
-}) => {
+const PricingSection = () => {
+  const { setSelectedAmount, setIsUpgradeModalOpen, handleConfirmUpgrade } =
+    useOutletContext();
   const { user } = useAuth();
   const isPremium = user?.plan === "UNLIMITED";
   const plans = PLAN_DEFINITIONS.map((plan) => {

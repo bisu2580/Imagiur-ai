@@ -6,7 +6,7 @@ const Avatar = () => {
   return (
     <div className="relative">
       {!user?.imageUrl ? (
-        <FaUser className="text-4xl rounded-full border border-white p-1" />
+        <FaUser className="text-4xl rounded-full border border-white p-1 text-white" />
       ) : (
         <div className="relative group">
           <div

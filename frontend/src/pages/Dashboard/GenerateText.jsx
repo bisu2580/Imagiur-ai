@@ -26,6 +26,7 @@ const GenerateText = () => {
     loadChat,
     sendMessage,
     startNewChat,
+    errorType,
   } = useChat();
   const [isChatsSectionOpen, setIsChatsSectionOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
@@ -163,7 +164,21 @@ const GenerateText = () => {
               )}
               <div ref={chatEndRef} />
             </div>
-
+            {errorType === "quota" && (
+              <div className="p-4 mb-4 bg-orange-500/20 border border-orange-500/50 rounded-xl text-center">
+                <p className="text-orange-200 text-sm mb-2">
+                  Google's free limit reached. Please wait ~60 seconds.
+                </p>
+                <button
+                  onClick={() =>
+                    sendMessage(conversation[conversation.length - 1].content)
+                  }
+                  className="text-xs font-bold uppercase tracking-wider hover:underline"
+                >
+                  Retry last message
+                </button>
+              </div>
+            )}
             {/* Input Bar */}
             <div className="w-full max-w-3xl mx-auto px-1 sm:px-3 pb-3">
               <div className="relative flex items-center bg-black/30 border border-white/10 rounded-2xl shadow-lg backdrop-blur-xl">

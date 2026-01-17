@@ -4,6 +4,7 @@ import * as chatService from "../utils/chatService";
 
 export const useChat = () => {
   const [chats, setChats] = useState([]);
+  const [errorType, setErrorType] = useState(null);
   const [conversation, setConversation] = useState([]);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [isLoadingChats, setIsLoadingChats] = useState(false);
@@ -35,6 +36,7 @@ export const useChat = () => {
   };
   const sendMessage = async (prompt) => {
     if (!prompt.trim()) return;
+    setErrorType(null);
     const userMessage = { role: "user", content: prompt };
     setConversation((prev) => [...prev, userMessage]);
     setIsGenerating(true);
@@ -66,6 +68,7 @@ export const useChat = () => {
     isLoadingChats,
     isGenerating,
     loadChat,
+    errorType,
     sendMessage,
     startNewChat,
   };
