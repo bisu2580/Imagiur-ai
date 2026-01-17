@@ -50,7 +50,7 @@ app.get("/api/hello", (req, res) => {
 // });
 
 // Replace your old app.all('*', ...) with this:
-app.all("/*path", (req, res) => {
+app.all("/.*/", (req, res) => {
   res.redirect(301, "https://imagiur-ai.vercel.app" + req.url);
 });
 const PORT = process.env.PORT || 4000;
