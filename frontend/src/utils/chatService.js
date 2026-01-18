@@ -10,7 +10,6 @@ const getAuthHeaders = async () => {
       });
     });
   };
-  console.log("Current Firebase User:", auth.currentUser);
   let user = auth.currentUser || (await getCurrentUser());
   if (!user) throw new Error("User not authenticated.");
   const idToken = await user.getIdToken();

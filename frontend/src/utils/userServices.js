@@ -30,7 +30,6 @@ export const uploadProfileImage = async (file) => {
     const result = await response.json();
 
     if (response.ok) {
-      console.log("Upload successful! New URL:", result.imageUrl);
       return result;
     } else {
       throw new Error(result.error || "Upload Failed");

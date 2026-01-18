@@ -167,13 +167,10 @@ router.post(
         return res.status(404).json({ error: "User not found" });
       }
       const userData = userDoc.data();
-      // --- Step B: Upload the image buffer to Cloudinary ---
-      console.log("Uploading image to Cloudinary...");
+
       const cloudinaryResult = await uploadprofileImage(req.file.buffer);
       const imageUrl = cloudinaryResult.secure_url;
-      console.log("Image uploaded successfully:", imageUrl);
 
-      // --- Step C: Update the user's document in Firestore ---
       const activity = {
         type: "profile_photo_upload",
         timestamp: new Date(),
@@ -184,7 +181,6 @@ router.post(
         imageUrl: imageUrl,
         activities: updatedActivities,
       });
-      // --- Step D: Send a success response back to the client ---
       res.status(200).json({
         message: "Profile image uploaded successfully!",
         imageUrl: imageUrl,
