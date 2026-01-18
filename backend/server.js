@@ -1,5 +1,4 @@
 import express from "express";
-import admin from "firebase-admin";
 import dotenv from "dotenv";
 import generateText from "./routes/generateText.js";
 import imageRoutes from "./routes/imageRoutes.js";
@@ -7,9 +6,7 @@ import signinRoute from "./routes/signinRoute.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import summerizeRoutes from "./routes/summerizeRoute.js";
-import { fileURLToPath } from "url";
 import cors from "cors";
-import path from "path";
 dotenv.config();
 const app = express();
 app.use(cors());

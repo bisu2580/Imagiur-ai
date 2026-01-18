@@ -117,11 +117,11 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       if (result?.user) {
         const user = result.user;
-        let photoURL = user.photoURL;
+        let photoURL = user?.photoURL;
         if (photoURL) {
           photoURL = photoURL.split("=")[0] + "?sz=256";
         }
-        const idToken = await user.getIdToken();
+        const idToken = await user?.getIdToken();
         const response = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/users/signin`,
           {
@@ -131,7 +131,7 @@ const Login = () => {
               Authorization: `Bearer ${idToken}`,
             },
             body: JSON.stringify({
-              displayName: user.displayName,
+              displayName: user?.displayName,
               photoURL: photoURL,
             }),
           }
