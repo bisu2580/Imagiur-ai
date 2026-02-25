@@ -1,5 +1,6 @@
 import Features from "./pages/Features/Features";
 import Gallery from "./pages/Gallery/Gallery";
+import Showcase from "./pages/Showcase/Showcase";
 import { Toaster } from "react-hot-toast";
 import Pricing from "./pages/Pricing/Pricing";
 import Home from "./pages/Home/Home";
@@ -19,6 +20,7 @@ import ResumeBuilder from "./pages/Dashboard/ResumeBuilder";
 import UserDetailsSection from "./pages/Dashboard/UserDetailsSection";
 import YoutubeSummerizer from "./pages/Dashboard/YoutubeSummerizer";
 import Portfolio from "./components/Portfolio";
+import GlowingDivider from "./helpers/GlowingDivider";
 function App() {
   return (
     <BrowserRouter>
@@ -34,21 +36,29 @@ function App() {
         }}
       />
       <Routes>
+        {/* Home Routes */}
         <Route
           path="/"
           element={
             <MainLayout>
               <Home />
+              <GlowingDivider />
               <Companies />
+              <GlowingDivider />
               <Features />
+              <GlowingDivider />
               <Gallery />
+              <GlowingDivider />
               <Pricing />
             </MainLayout>
           }
         />
+        <Route path="/showcase" element={<Showcase />} />
+        {/* Auth Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/portfolio" element={<Portfolio />} />
+        {/* Dashboard Routes */}
         <Route
           path="/dashboard/*"
           element={

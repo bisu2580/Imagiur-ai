@@ -1,126 +1,87 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Code,
-  Terminal as TerminalIcon,
   Zap,
   Github,
   Linkedin,
   Mail,
   Cpu,
-  BookOpen,
-  Award,
-  Activity,
-  Book,
-  Calendar,
-  GitBranch,
-  GitPullRequest,
   Star,
+  GitBranch,
+  Award,
+  Terminal,
+  ExternalLink,
+  ChevronRight,
+  Globe,
+  Database,
+  Layers,
 } from "lucide-react";
 
 import profile from "../assets/member1.png";
 
-/**
- * Tailwind version of the final portfolio
- * - Tailwind classes used everywhere
- * - Deterministic gradients per seed (stable)
- * - No global blinking interval in React (blink via CSS)
- * - Hack Nerd Font used via font-family fallback (you must include font files)
- */
+const ConsoleCard = ({ title, children, icon: Icon, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay }}
+    className="group relative p-6 rounded-3xl bg-white/[0.02] border border-white/10 hover:border-indigo-500/30 transition-all duration-500 overflow-hidden"
+  >
+    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-[50px] group-hover:bg-indigo-500/10 transition-colors duration-500" />
 
-/* ---------- gradient palette ---------- */
-const gradientMap = [
-  ["#ff6b6b", "#f06595"],
-  ["#845ef7", "#5c7cfa"],
-  ["#339af0", "#22b8cf"],
-  ["#20c997", "#94d82d"],
-  ["#f59f00", "#f76707"],
-  ["#e64980", "#be4bdb"],
-  ["#4dabf7", "#9775fa"],
-  ["#ff922b", "#ff6b6b"],
-  ["#ffd43b", "#ffa94d"],
-];
-
-function pickGradientBySeed(seed) {
-  let s = 0;
-  for (let i = 0; i < seed.length; i++) s = (s * 31 + seed.charCodeAt(i)) >>> 0;
-  const idx = s % gradientMap.length;
-  const g = gradientMap[idx];
-  return `linear-gradient(135deg, ${g[0]}, ${g[1]})`;
-}
-
-/* ---------- TerminalCard (Type 3 multi-color header) ---------- */
-const TerminalCard = ({ title, color = "#334155", children }) => {
-  return (
-    <div
-      className="rounded-lg overflow-hidden border shadow-md"
-      style={{ borderColor: `${color}33` }}
-    >
-      <div
-        className="flex items-center gap-2 px-4 py-2"
-        style={{ background: color }}
-      >
-        <div className="w-3 h-3 rounded-full bg-red-500" />
-        <div className="w-3 h-3 rounded-full bg-yellow-400" />
-        <div className="w-3 h-3 rounded-full bg-green-400" />
-        <div className="ml-3 text-sm font-mono text-white">{title}</div>
+    <div className="relative z-10">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
+          <Icon size={20} />
+        </div>
+        <h3 className="text-sm font-black uppercase tracking-[0.2em] text-zinc-500 group-hover:text-zinc-300 transition-colors">
+          {title}
+        </h3>
       </div>
-      <div className="p-4 font-mono text-sm text-slate-100">{children}</div>
+      <div className="text-zinc-400 group-hover:text-zinc-200 transition-colors">
+        {children}
+      </div>
     </div>
-  );
-};
+  </motion.div>
+);
 
-/* ---------- RainbowCard (R3 stable) ---------- */
-const RainbowCard = ({
-  seed = "default",
-  className = "",
-  children,
-  style = {},
-}) => {
-  const bg = useMemo(() => pickGradientBySeed(seed), [seed]);
+const SkillBadge = ({ skill, index }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.3, delay: index * 0.05 }}
+    whileHover={{ y: -2 }}
+    className="px-4 py-2 rounded-xl bg-white/[0.03] border border-white/5 text-zinc-300 text-sm font-bold flex items-center gap-2 hover:bg-white/[0.08] hover:border-indigo-500/40 transition-all cursor-default"
+  >
+    <div className="size-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+    {skill}
+  </motion.div>
+);
+
+const GitHubHeatmap = ({ weeks = 14 }) => {
+  const rows = 7;
   return (
-    <div
-      className={`rounded-xl p-6 text-white shadow-lg ${className}`}
-      style={{
-        background: bg,
-        boxShadow: "0 6px 30px rgba(0,0,0,0.18)",
-        ...style,
-      }}
-    >
-      <div className="font-mono">{children}</div>
-    </div>
-  );
-};
-
-/* ---------- GitHubHeatmap (static) ---------- */
-const GitHubHeatmap = ({ weeks = 12, rows = 7, seed = "heatmap" }) => {
-  // deterministic pseudo-random based on seed
-  const squares = useMemo(() => {
-    let s = 0;
-    for (let i = 0; i < seed.length; i++)
-      s = (s * 31 + seed.charCodeAt(i)) >>> 0;
-    const out = [];
-    for (let i = 0; i < weeks * rows; i++) {
-      s = (s * 1664525 + 1013904223) >>> 0;
-      out.push(s % 4); // 0..3
-    }
-    return out;
-  }, [weeks, rows, seed]);
-
-  const colorFor = (v) => {
-    if (v === 0) return "bg-slate-800";
-    if (v === 1) return "bg-green-700";
-    if (v === 2) return "bg-green-500";
-    return "bg-green-400";
-  };
-
-  return (
-    <div className="flex gap-1">
+    <div className="flex gap-1.5 p-4 rounded-2xl bg-black/20 border border-white/5">
       {Array.from({ length: weeks }).map((_, w) => (
-        <div key={w} className="grid gap-1">
+        <div key={w} className="grid gap-1.5">
           {Array.from({ length: rows }).map((__, r) => {
-            const v = squares[w * rows + r];
+            const intensity = Math.random();
+            const color =
+              intensity > 0.8
+                ? "bg-indigo-500"
+                : intensity > 0.5
+                  ? "bg-indigo-500/60"
+                  : intensity > 0.2
+                    ? "bg-indigo-500/30"
+                    : "bg-white/5";
             return (
-              <div key={r} className={`${colorFor(v)} rounded-sm w-2 h-2`} />
+              <div
+                key={r}
+                className={`${color} rounded-sm w-3 h-3 transition-colors duration-500 hover:scale-125 cursor-pointer`}
+                title={`${Math.floor(intensity * 10)} contributions`}
+              />
             );
           })}
         </div>
@@ -129,361 +90,298 @@ const GitHubHeatmap = ({ weeks = 12, rows = 7, seed = "heatmap" }) => {
   );
 };
 
-/* ---------- Timeline ---------- */
-const Timeline = ({ items = [] }) => {
-  return (
-    <div className="flex flex-col gap-4">
-      {items.map((it, idx) => (
-        <div key={idx} className="flex gap-3 items-start">
-          <div
-            className="min-w-[10px] h-2 rounded-full"
-            style={{ background: it.color || "#7c3aed", marginTop: 6 }}
-          />
-          <div>
-            <div className="font-mono font-semibold text-white">{it.title}</div>
-            <div className="font-mono text-sm text-slate-300">{it.sub}</div>
-            <div className="font-mono text-xs text-slate-400">{it.date}</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-/* ---------- Main Tailwind Component ---------- */
-export default function PortfolioTailwind() {
-  const [darkMode, setDarkMode] = useState(true);
+export default function Portfolio() {
   const [typedText, setTypedText] = useState("");
-  const fullText = "const developer = new FullStackEngineer();";
+  const fullText = "Building intelligent digital experiences.";
 
   useEffect(() => {
     if (typedText.length < fullText.length) {
-      const t = setTimeout(
-        () => setTypedText(fullText.slice(0, typedText.length + 1)),
-        90
-      );
+      const t = setTimeout(() => {
+        setTypedText(fullText.slice(0, typedText.length + 1));
+      }, 50);
       return () => clearTimeout(t);
     }
   }, [typedText]);
 
-  // stable gradients for projects/skills
-  const projectSeeds = useMemo(
-    () =>
-      ["ecom", "cms", "aichat", "fitness"].map((s) => pickGradientBySeed(s)),
-    []
-  );
-  const skillSeeds = useMemo(
-    () =>
-      ["js", "react", "node", "py", "mongo", "pg", "docker", "aws"].map((s) =>
-        pickGradientBySeed(s)
-      ),
-    []
-  );
-  const heroBg = useMemo(() => pickGradientBySeed("hero-biswa"), []);
+  const projects = [
+    {
+      title: "E-Commerce Nexus",
+      desc: "Full-scale commerce engine with real-time analytics.",
+      tech: ["React", "Node.js", "MongoDB", "Redux"],
+      icon: Globe,
+    },
+    {
+      title: "AI Chat Logic",
+      desc: "Distributed chat system with LLM integration.",
+      tech: ["Python", "FastAPI", "TensorFlow", "Redis"],
+      icon: Cpu,
+    },
+    {
+      title: "Cloud Resume Builder",
+      desc: "Dynamic resume generation with professional templates.",
+      tech: ["Next.js", "PostgreSQL", "Tailwind", "AWS"],
+      icon: Layers,
+    },
+    {
+      title: "Portfolio Engine",
+      desc: "The very site you are exploring right now.",
+      tech: ["Framer Motion", "Three.js", "React", "Lucide"],
+      icon: Code,
+    },
+  ];
 
-  const timelineItems = [
+  const timeline = [
     {
-      title: "B.Tech — Computer Science",
-      sub: "Your College Name",
+      role: "B.Tech Computer Science",
+      org: "Your Institute of Technology",
       date: "2020 — 2024",
-      color: "#ae3ec9",
+      status: "Graduate",
     },
     {
-      title: "Software Engineer Intern",
-      sub: "Startup X — Frontend & APIs",
+      role: "Software Engineer Intern",
+      org: "Innovate AI Labs",
       date: "Jun 2023 — Dec 2023",
-      color: "#4dabf7",
+      status: "Completed",
     },
     {
-      title: "Fullstack Projects & Freelance",
-      sub: "React / Node / Cloud",
+      role: "Fullstack Developer",
+      org: "Freelance & Projects",
       date: "2024 — Present",
-      color: "#f59f00",
+      status: "Active",
     },
   ];
 
   const skills = [
-    { name: "JavaScript", icon: <Code size={18} /> },
-    { name: "React", icon: <Zap size={18} /> },
-    { name: "Node.js", icon: <TerminalIcon size={18} /> },
-    { name: "Python", icon: <Activity size={18} /> },
-    { name: "MongoDB", icon: <Cpu size={18} /> },
-    { name: "PostgreSQL", icon: <Book size={18} /> },
-    { name: "Docker", icon: <BookOpen size={18} /> },
-    { name: "AWS", icon: <Award size={18} /> },
-  ];
-
-  const languages = [
-    { name: "JavaScript", pct: 45, color: "bg-amber-500" },
-    { name: "TypeScript", pct: 20, color: "bg-violet-600" },
-    { name: "Python", pct: 15, color: "bg-cyan-500" },
-    { name: "SQL", pct: 10, color: "bg-emerald-500" },
-    { name: "Other", pct: 10, color: "bg-orange-500" },
-  ];
-
-  const projects = [
-    {
-      title: "E-Commerce Platform",
-      tech: "React, Node.js, MongoDB",
-      seed: "ecom",
-    },
-    {
-      title: "Portfolio CMS",
-      tech: "Next.js, Prisma, PostgreSQL",
-      seed: "cms",
-    },
-    {
-      title: "AI Chat Bot",
-      tech: "Python, FastAPI, TensorFlow",
-      seed: "aichat",
-    },
-    {
-      title: "Mobile Fitness App",
-      tech: "React Native, Firebase",
-      seed: "fitness",
-    },
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Node.js",
+    "Python",
+    "PostgreSQL",
+    "MongoDB",
+    "Docker",
+    "AWS",
+    "Framer Motion",
+    "Tailwind CSS",
   ];
 
   return (
-    <div
-      className={`min-h-screen p-6 md:p-10 ${
-        darkMode
-          ? "bg-gradient-to-b from-slate-900 to-slate-800 text-slate-100"
-          : "bg-gradient-to-b from-amber-50 to-rose-50 text-slate-900"
-      }`}
-      style={{ fontFamily: "Hack, 'Hack Nerd Font', 'Fira Code', monospace" }}
-    >
-      {/* font-family note (install Hack Nerd Font in production) */}
-      <div className="fixed top-3 left-3 text-xs text-slate-400 font-mono">
-        Using: <span className="font-semibold">Hack Nerd Font</span> (add to
-        /public/fonts or system)
+    <div className="min-h-screen bg-[#050505] text-zinc-200 font-sans selection:bg-indigo-500/30 overflow-x-hidden">
+      {/* Background Decor */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-[-10%] w-[50%] h-[50%] bg-indigo-600/10 blur-[150px] rounded-full" />
+        <div className="absolute bottom-0 right-[-10%] w-[50%] h-[50%] bg-purple-600/10 blur-[150px] rounded-full" />
       </div>
 
-      {/* Theme toggle */}
-      <button
-        onClick={() => setDarkMode((s) => !s)}
-        className="fixed top-3 right-3 px-3 py-2 rounded-full border shadow-sm font-mono"
-        style={{
-          borderColor: darkMode ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
-        }}
-      >
-        {darkMode ? "☀️" : "🌙"}
-      </button>
-
-      <div className="max-w-7xl mx-auto grid gap-6">
-        {/* HERO + STATUS */}
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div
-            className="flex-1 rounded-xl overflow-hidden"
-            style={{ background: heroBg }}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 lg:py-32">
+        {/* Header Section */}
+        <div className="flex flex-col lg:flex-row gap-12 items-start mb-24">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex-1"
           >
-            <div className="p-6 md:p-8 flex items-center gap-6">
-              <div className="flex-1">
-                <div className="font-mono text-sm text-white mb-2">
-                  {">"} ./portfolio.init()
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-black uppercase tracking-widest mb-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+              </span>
+              Protfolio v2.4.0
+            </div>
+
+            <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-6">
+              I'm <span className="text-indigo-500">Biswa</span>
+            </h1>
+
+            <div className="text-xl md:text-2xl font-bold text-zinc-400 h-10">
+              {typedText}
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{
+                  duration: 0.8,
+                  repeat: Infinity,
+                  ease: "steps(2)",
+                }}
+                className="inline-block w-1.5 h-6 bg-indigo-500 ml-2 align-middle"
+              />
+            </div>
+
+            <p className="mt-8 text-zinc-500 leading-relaxed text-lg max-w-xl">
+              Specialized in crafting modern architectural solutions and
+              delightful user experiences with a focus on high-performance React
+              ecosystems.
+            </p>
+
+            <div className="mt-12 flex flex-wrap gap-4">
+              <button className="px-8 py-4 rounded-2xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-500/20 active:scale-95">
+                Download CV
+              </button>
+              <div className="flex items-center gap-2">
+                {[Github, Linkedin, Mail].map((Icon, i) => (
+                  <button
+                    key={i}
+                    className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-indigo-500/30 text-zinc-400 hover:text-white transition-all"
+                  >
+                    <Icon size={20} />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative lg:w-96 shrink-0"
+          >
+            {/* Profile Aura */}
+            <div className="absolute inset-0 bg-indigo-600/20 blur-[80px] rounded-full" />
+
+            <div className="relative p-2 rounded-[3rem] bg-gradient-to-br from-white/10 to-transparent border border-white/10 overflow-hidden shadow-2xl">
+              <img
+                src={profile}
+                alt="Biswa"
+                className="w-full aspect-square object-cover rounded-[2.5rem] grayscale hover:grayscale-0 transition-all duration-700"
+              />
+
+              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-black/60 backdrop-blur border border-white/10">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-xs font-black text-zinc-500 uppercase">
+                      Location
+                    </p>
+                    <p className="text-sm font-bold text-white">
+                      Bhubaneswar, IN
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs font-black text-zinc-500 uppercase">
+                      Availability
+                    </p>
+                    <p className="text-sm font-bold text-emerald-500">High</p>
+                  </div>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-3">
-                  Hi, I'm Biswa
-                </h1>
-                <div className="font-mono text-lg text-white mb-4">
-                  {typedText}
-                  <span className="blink ml-2">|</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Dashboard Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ConsoleCard title="Expertise" icon={Zap} delay={0.1}>
+            <div className="flex flex-wrap gap-2">
+              {skills.map((s, i) => (
+                <SkillBadge key={i} skill={s} index={i} />
+              ))}
+            </div>
+          </ConsoleCard>
+
+          <ConsoleCard title="Activity Log" icon={Terminal} delay={0.2}>
+            <GitHubHeatmap />
+            <div className="mt-6 space-y-3">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-bold">LeetCode Problem Solved</span>
+                <span className="text-white font-black">250+</span>
+              </div>
+              <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                <div className="h-full w-[75%] bg-indigo-500" />
+              </div>
+            </div>
+          </ConsoleCard>
+
+          <ConsoleCard title="Career Track" icon={GitBranch} delay={0.3}>
+            <div className="space-y-6">
+              {timeline.map((item, i) => (
+                <div key={i} className="flex gap-4">
+                  <div className="size-2 rounded-full bg-indigo-500 mt-2 shrink-0" />
+                  <div>
+                    <h4 className="text-white font-bold text-sm">
+                      {item.role}
+                    </h4>
+                    <p className="text-xs text-zinc-500">{item.org}</p>
+                    <p className="text-[10px] font-black uppercase text-indigo-400 mt-1">
+                      {item.date}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-white/90 max-w-xl">
-                  Full-stack developer focused on modern React apps, scalable
-                  Node backends, and delightful UX.
+              ))}
+            </div>
+          </ConsoleCard>
+
+          {/* Project Highlights */}
+          <div className="md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+            <h2 className="col-span-full text-2xl font-black text-white mt-8 mb-4">
+              Featured Shipments
+            </h2>
+            {projects.map((proj, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="group p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:border-indigo-500/30 hover:bg-white/[0.04] transition-all duration-500 cursor-pointer"
+              >
+                <div className="size-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-10 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
+                  <proj.icon size={24} />
+                </div>
+
+                <h3 className="text-xl font-black text-white mb-2 leading-tight">
+                  {proj.title}
+                </h3>
+                <p className="text-sm text-zinc-500 mb-6 line-clamp-2">
+                  {proj.desc}
                 </p>
 
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-md text-sm">
-                    <Star size={14} /> 50+ Projects
-                  </span>
-                  <span className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-md text-sm">
-                    <GitBranch size={14} /> Open Source
-                  </span>
-                  <span className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-md text-sm">
-                    <Award size={14} /> CP Enthusiast
-                  </span>
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                  {proj.tech.slice(0, 3).map((t, idx) => (
+                    <span
+                      key={idx}
+                      className="text-[10px] font-black uppercase text-zinc-600 bg-white/5 px-2 py-1 rounded"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                  <ChevronRight
+                    size={14}
+                    className="ml-auto text-zinc-600 group-hover:text-white group-hover:translate-x-1 transition-all"
+                  />
                 </div>
-              </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
 
-              {/* Profile img: scale on hover only */}
-              <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-white/10">
-                <img
-                  src={profile}
-                  alt="profile"
-                  className="w-full h-full object-cover transform transition-transform duration-300"
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.transform = "scale(1.06)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.transform = "scale(1)")
-                  }
-                />
-              </div>
+        {/* Branding Footer */}
+        <div className="mt-32 pt-20 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-3">
+            <div className="size-10 rounded-xl bg-indigo-600 flex items-center justify-center font-black text-white">
+              B
+            </div>
+            <div>
+              <p className="text-sm font-black text-white tracking-widest uppercase">
+                Biswa Sahoo
+              </p>
+              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest opacity-50">
+                Fullstack Engineer • 2025
+              </p>
             </div>
           </div>
 
-          {/* right column: terminal cards */}
-          <div className="w-full lg:w-[380px] flex flex-col gap-4">
-            <TerminalCard title="status.sh" color="#339af0">
-              $ Status:{" "}
-              <span className="text-emerald-300">Open to opportunities</span>
-              <br />
-              $ Mode: Remote / Hybrid / On-site
-              <br />
-              <br />
-              <div className="flex items-center gap-3 text-slate-100">
-                <a href="#" className="flex items-center gap-2">
-                  <Github /> GitHub
-                </a>
-                <a href="#" className="flex items-center gap-2">
-                  <Linkedin /> LinkedIn
-                </a>
-                <a href="#" className="flex items-center gap-2">
-                  <Mail /> Mail
-                </a>
-              </div>
-            </TerminalCard>
-
-            <TerminalCard title="coding-stats" color="#f59f00">
-              ⭐ LeetCode: 1650+ (250+ solved)
-              <br />
-              🔥 50-day streak
-              <br />
-              <br />
-              ⭐ GFG Score: 680+ (21 Day POTD)
-              <br />
-              <br />
-              <div className="flex items-center gap-3">
-                <div className="text-sm text-slate-100">GitHub Activity</div>
-                <GitHubHeatmap weeks={12} rows={7} seed="biswa-heat" />
-              </div>
-            </TerminalCard>
+          <div className="flex gap-8 text-xs font-black uppercase tracking-widest text-zinc-500">
+            <a href="#" className="hover:text-indigo-400 transition-colors">
+              GitHub
+            </a>
+            <a href="#" className="hover:text-indigo-400 transition-colors">
+              Dribbble
+            </a>
+            <a href="#" className="hover:text-indigo-400 transition-colors">
+              LinkedIn
+            </a>
           </div>
         </div>
-
-        {/* timeline + languages */}
-        <div className="grid lg:grid-cols-2 gap-6">
-          <RainbowCard seed={"timeline"}>
-            <h3 className="text-xl font-bold mb-3">Timeline</h3>
-            <Timeline items={timelineItems} />
-          </RainbowCard>
-
-          <div className="flex flex-col gap-4">
-            <RainbowCard seed={"languages"}>
-              <div className="flex justify-between items-center mb-2">
-                <div className="font-bold">Language Usage</div>
-                <div className="text-sm text-white/90">Approx</div>
-              </div>
-              <div className="space-y-3">
-                {languages.map((lg, i) => (
-                  <div key={i}>
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-3 h-3 rounded-sm ${lg.color}`} />
-                        <div className="font-mono">{lg.name}</div>
-                      </div>
-                      <div className="font-mono">{lg.pct}%</div>
-                    </div>
-                    <div className="bg-white/10 rounded-full h-2">
-                      <div
-                        className={`${lg.color} h-2 rounded-full`}
-                        style={{ width: `${lg.pct}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </RainbowCard>
-
-            <RainbowCard seed={"badges"}>
-              <div className="flex gap-3 flex-wrap">
-                <span className="bg-white/10 px-3 py-1 rounded-md font-mono">
-                  50+ Projects
-                </span>
-                <span className="bg-white/10 px-3 py-1 rounded-md font-mono">
-                  Open Source
-                </span>
-                <span className="bg-white/10 px-3 py-1 rounded-md font-mono">
-                  Hackathon Winner
-                </span>
-              </div>
-            </RainbowCard>
-          </div>
-        </div>
-
-        {/* skills grid */}
-        <div>
-          <h3 className="text-xl font-bold mb-3">Skills & Tools</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {skills.map((s, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 p-3 rounded-lg"
-                style={{
-                  background: skillSeeds[i % skillSeeds.length],
-                  color: "#fff",
-                }}
-              >
-                <div className="w-12 h-12 rounded-md grid place-items-center bg-black/20">
-                  {s.icon}
-                </div>
-                <div className="font-mono font-semibold">{s.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* projects grid */}
-        <div>
-          <h3 className="text-xl font-bold mb-3">Featured Projects</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {projects.map((p, idx) => (
-              <div
-                key={idx}
-                className="p-4 rounded-lg"
-                style={{
-                  background: projectSeeds[idx % projectSeeds.length],
-                  color: "#fff",
-                }}
-              >
-                <div className="font-mono font-extrabold text-lg">
-                  {p.title}
-                </div>
-                <div className="mt-2 text-sm">{p.tech}</div>
-                <div className="mt-3 font-mono text-sm">{`{> view_details()}`}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* additional coder cards */}
-        <div className="grid md:grid-cols-2 gap-4">
-          <TerminalCard title="cp-stats.log" color="#e64980">
-            <div className="mb-2 font-semibold">🏆 CP Score: 2100 (agg)</div>
-            <div>✅ 400+ problems across platforms</div>
-            <div>⏱ Fastest: solved medium in 18 minutes</div>
-          </TerminalCard>
-
-          <RainbowCard seed={"achievements"}>
-            <div className="font-semibold mb-2">Achievements</div>
-            <ul className="list-disc list-inside text-sm">
-              <li>1st Place — University Hackathon</li>
-              <li>Published UI library — 1000+ stars</li>
-              <li>Speaker: Local Dev Meetups</li>
-            </ul>
-          </RainbowCard>
-        </div>
-
-        {/* footer */}
-        <TerminalCard title="footer" color="#4dabf7">
-          $ echo "Let's build something amazing together"
-          <br />© 2025 Biswa • Built with Hack Nerd Font & Coffee ☕
-        </TerminalCard>
       </div>
-
-      {/* blink css (no react setInterval) */}
     </div>
   );
 }

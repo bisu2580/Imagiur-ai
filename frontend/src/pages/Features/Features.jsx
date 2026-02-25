@@ -2,97 +2,167 @@ import { features } from "../../data";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { featureCardVariants } from "../../utils/animations";
-import SectionTitle from "../../helpers/SectionTitle";
 
 export default function Features() {
-  const [visible, setVisible] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const divRef = useRef(null);
-  const getGlowColor = (id) =>
-    id % 2 === 0
-      ? {
-          border: "border-[#34D399]/40",
-          glow: "rgba(52, 211, 153, 0.4)",
-          text: "text-[#34D399]",
-        }
-      : {
-          border: "border-[#FACC15]/40",
-          glow: "rgba(250, 204, 21, 0.4)",
-          text: "text-[#FACC15]",
-        };
   return (
     <section
-      className="relative w-full py-20 bg-black/60 text-center"
+      className="relative w-full py-32 bg-black/60 text-center z-10"
       id="features"
     >
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.15),transparent_40%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.15),transparent_40%)]"></div>
+      {/* Background Decor */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.1),transparent_50%)]"></div>
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.1),transparent_50%)]"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.05),transparent_60%)]"></div>
       </div>
-      <div className="text-center mb-12">
-        <SectionTitle
-          textFirst="Powerful"
-          textSecond="Features"
-          para="Explore what you can do with our all-in-one AI platform."
+
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-24">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-6xl font-black mb-8 tracking-tight text-white"
+          >
+            Powerful AI at Your <br />{" "}
+            <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+              Fingertips
+            </span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-gray-400 max-w-2xl mx-auto text-lg md:text-xl font-medium leading-relaxed"
+          >
+            Our toolset is engineered for professionals who demand excellence,
+            speed, and creative freedom.
+          </motion.p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard key={feature.id} feature={feature} index={index} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeatureCard({ feature, index }) {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setPosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const getTheme = (colorStr) => {
+    if (colorStr.includes("blue"))
+      return {
+        text: "text-blue-400",
+        bg: "group-hover:bg-blue-600",
+        border: "hover:border-blue-500/50",
+        glow: "rgba(59, 130, 246, 0.15)",
+      };
+    if (colorStr.includes("fuchsia") || colorStr.includes("purple"))
+      return {
+        text: "text-fuchsia-400",
+        bg: "group-hover:bg-fuchsia-600",
+        border: "hover:border-fuchsia-500/50",
+        glow: "rgba(192, 38, 211, 0.15)",
+      };
+    if (colorStr.includes("emerald") || colorStr.includes("teal"))
+      return {
+        text: "text-emerald-400",
+        bg: "group-hover:bg-emerald-600",
+        border: "hover:border-emerald-500/50",
+        glow: "rgba(16, 185, 129, 0.15)",
+      };
+    if (colorStr.includes("yellow") || colorStr.includes("orange"))
+      return {
+        text: "text-yellow-400",
+        bg: "group-hover:bg-yellow-600",
+        border: "hover:border-yellow-500/50",
+        glow: "rgba(234, 179, 8, 0.15)",
+      };
+    if (colorStr.includes("cyan"))
+      return {
+        text: "text-cyan-400",
+        bg: "group-hover:bg-cyan-600",
+        border: "hover:border-cyan-500/50",
+        glow: "rgba(6, 182, 212, 0.15)",
+      };
+    return {
+      text: "text-purple-400",
+      bg: "group-hover:bg-purple-600",
+      border: "hover:border-purple-500/50",
+      glow: "rgba(168, 85, 247, 0.15)",
+    };
+  };
+
+  const theme = getTheme(feature.color);
+  const Icon = feature.icon;
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={featureCardVariants}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group p-10 rounded-[2.5rem] bg-white/[0.03] border border-white/10 ${theme.border} transition-all duration-500 flex flex-col items-start text-left gap-4 relative overflow-hidden h-full`}
+    >
+      {/* Static Gradient Blur */}
+      <div
+        className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.color} blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+      />
+
+      {/* Interactive Mouse Glow */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        style={{
+          background: `radial-gradient(400px circle at ${position.x}px ${position.y}px, ${theme.glow}, transparent 80%)`,
+        }}
+      />
+
+      {/* Image Preview */}
+      <div className="w-full h-48 rounded-[1.5rem] overflow-hidden mb-6 relative z-10 border border-white/5">
+        <img
+          src={feature.img}
+          alt={feature.title}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-6xl mx-auto px-6">
-        {features.map(({ id, title, desc, icon: Icon, img, color }) => {
-          const { border, glow, text } = getGlowColor(id);
-          return (
-            <motion.div
-              key={id}
-              ref={divRef}
-              custom={id}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={featureCardVariants}
-              exit="exit"
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                setPosition({
-                  x: e.clientX - rect.left,
-                  y: e.clientY - rect.top,
-                });
-                setVisible(true);
-              }}
-              onMouseEnter={() => setVisible(true)}
-              onMouseLeave={() => setVisible(false)}
-              className={`relative rounded-2xl p-6 transition-all duration-300 bg-zinc-950 border group overflow-hidden ${border}`}
-            >
-              {/* Moving Glow */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300"
-                style={{
-                  background: `radial-gradient(200px circle at ${position.x}px ${position.y}px,${glow},transparent 90%)`,
-                }}
-              />
+      <div className="relative z-10 w-full flex-1 flex flex-col">
+        <div
+          className={`p-4 inline-flex rounded-2xl bg-white/5 border border-white/10 ${theme.text} group-hover:scale-110 ${theme.bg} group-hover:text-white transition-all duration-500 mb-6 w-fit`}
+        >
+          <Icon size={32} />
+        </div>
+        <h3 className="text-3xl font-extrabold mb-4 text-white">
+          {feature.title}
+        </h3>
+        <p className="text-gray-400 leading-relaxed text-base font-normal line-clamp-2 flex-1">
+          {feature.desc}
+        </p>
 
-              {/* Image Preview */}
-              <div className="w-full h-45 rounded-xl overflow-hidden mb-4 relative z-10">
-                <img
-                  src={img}
-                  alt={title}
-                  className="w-full h-full object-cover hover:scale-110 transition"
-                />
-              </div>
-
-              {/* Icon + Title */}
-              <div
-                className={`flex items-center justify-center gap-3 relative z-10 ${text}`}
-              >
-                <Icon className="size-5" />
-                <h3 className="text-lg font-bold">{title}</h3>
-              </div>
-
-              {/* Description */}
-              <p className="text-gray-300 mt-3 text-sm relative z-10">{desc}</p>
-            </motion.div>
-          );
-        })}
+        <div className="mt-10 flex items-center gap-3 text-sm font-black text-white/15 group-hover:text-white/50 transition-colors uppercase tracking-[0.2em]">
+          Feature {index + 1}
+        </div>
       </div>
-    </section>
+    </motion.div>
   );
 }

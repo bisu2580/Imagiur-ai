@@ -1,54 +1,122 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+  --purple-glow: rgba(168, 85, 247, 0.4);
+}
+
 .heading {
   font-family: "Montserrat", sans-serif;
 }
 
+/* Marquee Animation */
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+.marquee-content {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 40s linear infinite;
+  padding-left: 2rem;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* CTA Button Enhancements */
 .cta-btn {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  padding: 1rem 2rem;
-  font-size: 1.125rem; /* 18px */
-  font-weight: 600;
-  color: white;
-  background: linear-gradient(90deg, #c026d3, #7c3aed, #2563eb);
-  border: none;
-  border-radius: 0.75rem; /* 12px */
-  cursor: pointer;
-  overflow: hidden; /* Crucial for the shine effect */
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  box-shadow: 0 0 25px rgba(124, 58, 237, 0.4);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.cta-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 35px rgba(124, 58, 237, 0.6);
-}
-
-/* Shine effect pseudo-element */
-.cta-btn::before {
+.cta-btn::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 70%
   );
-  transition: left 0.6s ease;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.6s ease;
+  pointer-events: none;
 }
 
-.cta-btn:hover::before {
-  left: 100%;
+.cta-btn:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Glassmorphism Refinements */
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* Responsive Columns for Gallery */
+.columns-1 {
+  column-count: 1;
+}
+.columns-2 {
+  column-count: 2;
+}
+.columns-3 {
+  column-count: 3;
+}
+.columns-4 {
+  column-count: 4;
+}
+
+/* Selection Style */
+::selection {
+  background: rgba(168, 85, 247, 0.3);
+  color: white;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 5px;
+  border: 2px solid #000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
 }
 
 @media (max-width: 768px) {
-  .cta-btn {
-    padding: 0.65rem 1.25rem;
-    font-size: 1rem;
+  .marquee-content {
+    gap: 3rem;
+    animation-duration: 25s;
   }
 }

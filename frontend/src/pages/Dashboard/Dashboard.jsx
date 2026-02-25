@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import SideBar from "./SideBar";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -75,7 +76,23 @@ export default function Dashboard() {
       </div>
 
       <div className="flex flex-1">
-        <div className="fixed lg:sticky lg:top-0 h-screen lg:w-72 bg-black/40 backdrop-blur border-r border-white/10 z-40">
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSidebarOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"
+            />
+          )}
+        </AnimatePresence>
+
+        <div
+          className={`${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:translate-x-0 fixed top-0 left-0 lg:sticky lg:top-0 h-screen lg:w-72 bg-zinc-950/40 backdrop-blur border-r border-white/10 z-40 transition-transform duration-300`}
+        >
           <SideBar
             onSignOut={handleSignOut}
             sidebarOpen={sidebarOpen}
@@ -86,32 +103,14 @@ export default function Dashboard() {
         </div>
 
         <main className="flex-1 h-screen p-4 md:p-8 overflow-y-auto">
-          <Outlet context={{
-            handleConfirmUpgrade,
-            setSelectedAmount,
-            setIsUpgradeModalOpen,
-            setIsModalOpen
-          }}/>
-          {/* {active === "overview" && (
-            <OverviewSection handleConfirmUpgrade={handleConfirmUpgrade} />
-          )}
-          {active === "imageGenerations" && <Generate />}
-          {active === "textGenerations" && <GenerateText />}
-          {active === "pricing" && (
-            <PricingSection
-              setSelectedAmount={setSelectedAmount}
-              setIsUpgradeModalOpen={setIsUpgradeModalOpen}
-              handleConfirmUpgrade={handleConfirmUpgrade}
-            />
-          )}
-          {active === "resume_builder" && <ResumeBuilder />}
-          {active === "userDetails" && (
-            <UserDetailsSection
-              setIsModalOpen={setIsModalOpen}
-              loading={loading}
-              handleConfirmUpgrade={handleConfirmUpgrade}
-            />
-          )} */}
+          <Outlet
+            context={{
+              handleConfirmUpgrade,
+              setSelectedAmount,
+              setIsUpgradeModalOpen,
+              setIsModalOpen,
+            }}
+          />
         </main>
         {isModalOpen && (
           <Modal

@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./dashboard.css";
 import { sidebar_nav } from "../../data";
-import { LogOut, Gauge, Infinity } from "lucide-react";
+import { LogOut, Gauge, Infinity, HomeIcon } from "lucide-react";
 import { FALLBACK_IMAGE } from "../../constants/images";
 import { useAuth } from "../../hooks/useAuth";
+import logo from "../../assets/logo.png";
 
 const SideBar = ({
   onSignOut,
@@ -22,112 +23,157 @@ const SideBar = ({
   };
 
   return (
-    <aside
-      className={`${
-        sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-      } fixed lg:static z-50 h-[100dvh] sm:w-60 md:w-65 lg:w-72 shrink-0 border-r border-white/5 bg-black lg:bg-black/40 backdrop-blur-xl transition-transform duration-300`}
-    >
-      {/* Profile */}
-      <div className="p-4 md:p-6 border-b border-white/5">
-        <div className="flex items-center gap-4">
-          <div
-            className="relative cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 group"
-            onClick={() => setIsModalOpen(true)}
+    <aside className="h-full w-full flex flex-col bg-[#050505] lg:bg-transparent">
+      {/* SVG Gradient Definition */}
+      <svg width="0" height="0" className="absolute">
+        <defs>
+          <linearGradient
+            id="sidebar-icon-gradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
           >
-            {loading ? (
-              <div className="size-10 md:size-14 rounded-full md:rounded-2xl bg-gray-700/50 animate-pulse"></div>
-            ) : (
-              <div className="size-10 md:size-14 rounded-full md:rounded-2xl ring-2 ring-indigo-500/40 transition-all duration-300 group-hover:ring-indigo-500 overflow-hidden">
-                <img
-                  src={user?.imageUrl || FALLBACK_IMAGE}
-                  alt="User"
-                  className="w-full h-full object-cover"
-                  crossOrigin="anonymous"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-            )}
-            <span className="absolute -bottom-1 -right-1 rounded-full bg-indigo-600 px-1.5 py-0.5 text-[10px] font-semibold shadow-lg truncate max-w-[50px] md:max-w-[75px]">
-              {user?.plan || "Plan"}
-            </span>
-          </div>
-          <div className="min-w-0">
-            <div className="text-sm truncate font-semibold lg:text-base">
-              {user?.fullname || "Full Name"}
-            </div>
-            <div className="truncate text-xs text-gray-400">
-              {user?.email || "Email Id"}
-            </div>
-          </div>
-        </div>
+            <stop offset="0%" stopColor="#4f46e5" />
+            <stop offset="100%" stopColor="#9333ea" />
+          </linearGradient>
+        </defs>
+      </svg>
 
-        {/* Credits pill */}
-        <div className="mt-4 flex items-center justify-between rounded-xl bg-white/5 p-2 lg:p-3">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex size-6 items-center justify-center rounded-lg bg-indigo-500/20">
-              <Gauge className="size-3.5" />
-            </span>
-            <span className="text-xs lg:text-sm">Credits</span>
+      {/* Brand Header */}
+      <div className="p-6 pb-2">
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="Logo" className="h-9 w-9 rounded-full" />
+          <span className="text-lg font-black tracking-loose text-white">
+            IMAGIUR AI
+          </span>
+        </div>
+      </div>
+
+      {/* Profile Section */}
+      <div className="p-6">
+        <div className="relative p-1 rounded-2xl bg-white/[0.02] border border-white/5 overflow-hidden">
+          {/* Subtle Inner Glow */}
+          <div className="absolute -top-10 -right-10 size-20 bg-indigo-500/10 blur-2xl" />
+
+          <div className="relative z-10 p-3 flex items-center gap-4">
+            <div
+              className="relative cursor-pointer shrink-0"
+              onClick={() => setIsModalOpen(true)}
+            >
+              {loading ? (
+                <div className="size-12 rounded-xl bg-zinc-800 animate-pulse"></div>
+              ) : (
+                <div className="size-12 rounded-xl border border-white/10 overflow-hidden shadow-2xl transition-transform hover:scale-105 active:scale-95">
+                  <img
+                    src={user?.imageUrl || FALLBACK_IMAGE}
+                    alt="User"
+                    className="w-full h-full object-cover"
+                    crossOrigin="anonymous"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+              )}
+              <div className="absolute -bottom-1 -right-1 size-4 bg-indigo-500 rounded-full border-2 border-[#050505] shadow-[0_0_10px_rgba(79,70,229,0.5)]" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold text-white truncate">
+                {user?.fullname || "Explorer"}
+              </p>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded">
+                  {user?.plan || "FREE"}
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="text-xs lg:text-sm font-semibold text-indigo-300">
-            {user?.plan === "UNLIMITED" ? (
-              <Infinity className="w-5 h-5" />
-            ) : (
-              <>{user?.credits ?? "0"}</>
-            )}
+
+          {/* Credits pill */}
+          <div className="mt-3 mx-2 mb-2 flex items-center justify-between rounded-xl bg-white/[0.03] p-3 border border-white/5 text-zinc-400">
+            <div className="flex items-center gap-2">
+              <Gauge className="size-3.5 text-zinc-500" />
+              <span className="text-[10px] font-bold uppercase tracking-tighter">
+                Credits
+              </span>
+            </div>
+            <div className="text-sm font-black text-white">
+              {user?.plan === "UNLIMITED" ? (
+                <Infinity className="size-4 text-indigo-400" />
+              ) : (
+                <>{user?.credits ?? "0"}</>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Nav */}
-      <nav className="flex flex-col gap-1 p-3 relative">
+      <nav className="flex-1 px-4 space-y-1 overflow-y-auto hide-scrollbar">
+        <p className="px-4 text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] mb-4">
+          Navigation
+        </p>
         {sidebar_nav.map(({ id, label, icon: Icon }) => {
           const activeState = isActive(id);
           return (
-            <motion.button
+            <button
               key={id}
               onClick={() => {
-                navigate(`/dashboard/${id}`)
+                navigate(`/dashboard/${id}`);
                 setSidebarOpen(false);
               }}
-              whileHover={{ scale: 1.01 }}
-              className={`group flex items-center gap-3 rounded-xl px-4 py-2 lg:py-3 text-left transition-colors ${
+              className={`group w-full flex items-center gap-3 rounded-xl px-4 py-3 text-left transition-all duration-300 relative ${
                 activeState
-                  ? "bg-gradient-to-r from-indigo-600/70 to-purple-600/60 text-white"
-                  : "hover:bg-white/5 text-gray-300"
+                  ? "bg-white/[0.05] text-white border border-white/10 shadow-lg"
+                  : "text-zinc-500 hover:text-white hover:bg-white/[0.02]"
               }`}
             >
               <Icon
-                className={`size-5 transition-transform duration-200 ${
-                  activeState ? "scale-105" : "group-hover:scale-110"
+                size={20}
+                stroke={
+                  activeState ? "url(#sidebar-icon-gradient)" : "currentColor"
+                }
+                className={`transition-all duration-200 ${
+                  activeState
+                    ? "scale-110"
+                    : "group-hover:scale-110 group-hover:text-indigo-400"
                 }`}
               />
-              <span className="truncate text-xs lg:text-sm font-medium">
+              <span
+                className={`text-sm font-bold transition-transform duration-300 ${
+                  activeState ? "translate-x-1" : "group-hover:translate-x-1"
+                }`}
+              >
                 {label}
               </span>
-            </motion.button>
+
+              {activeState && (
+                <motion.div
+                  layoutId="active-pill"
+                  className="absolute left-0 w-1 h-5 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full"
+                />
+              )}
+            </button>
           );
         })}
       </nav>
-      <div className="mt-2 p-2 lg:p-4">
+
+      {/* Quick Actions / Footer */}
+      <div className="p-4 bg-white/[0.02] border-t border-white/5 space-y-1">
+        <button
+          onClick={() => navigate("/")}
+          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-zinc-400 hover:text-white hover:bg-white/[0.03] transition-all group"
+        >
+          <HomeIcon className="size-4 group-hover:text-indigo-400 transition-colors" />
+          Return to Site
+        </button>
         <button
           onClick={onSignOut}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600/80 px-4 py-2 lg:py-2.5 text-xs lg:text-sm font-semibold shadow-lg shadow-red-900/30 transition hover:bg-red-500"
+          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-red-400/70 hover:text-red-400 hover:bg-red-400/5 transition-all group"
         >
-          <LogOut className="size-4" /> Sign out
+          <LogOut className="size-4 group-hover:rotate-12 transition-transform" />
+          Sign Out
         </button>
-      </div>
-      <div className="flex p-2 lg:p-4">
-        <motion.button
-          onClick={() => navigate("/")}
-          whileHover={{ scale: 1.01 }}
-          className={`flex items-center justify-center gap-3 rounded-xl px-4 py-2 lg:py-2.5 text-center transition-colors bg-gradient-to-r from-indigo-600/70 to-purple-600/60 text-white hover:bg-white/4 hover:text-gray-300 w-full self-center`}
-        >
-          <LogOut className="size-4 lg:size-5 transition-transform duration-200 hover:scale-110" />
-          <span className="truncate text-xs lg:text-sm font-medium">
-            Go to Home
-          </span>
-        </motion.button>
       </div>
     </aside>
   );

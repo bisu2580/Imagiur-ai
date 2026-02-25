@@ -238,7 +238,7 @@ export const features = [
   },
   {
     id: 5,
-    title: "Interactive AI Dashboard",
+    title: "AI Dashboard",
     desc: "Control all your tools — Image Generation, AI Chat, and Resume Builder — from one sleek and powerful dashboard.",
     icon: LayoutDashboard,
     img: dashboard,

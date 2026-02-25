@@ -2,9 +2,10 @@ import { FaTwitter, FaLinkedin, FaInstagram, FaGithub } from "react-icons/fa";
 import { MdEmail, MdPhone } from "react-icons/md";
 import photo from "../../assets/photo.png";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Footer = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const handleLinkClick = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -90,8 +91,13 @@ const Footer = () => {
       <div className="border-t border-gray-800 mt-10 py-4 text-center text-xs text-gray-500 flex justify-between">
         <p>&copy; 2025 Imagiur. All rights reserved.</p>
         <span className="flex gap-1">
-          Made with ❤️ by {" "}
-          <p onClick={()=>navigate("/portfolio")} className="hover:underline cursor-pointer z-[1000]">Biswajit Sahoo</p>
+          Made with ❤️ by{" "}
+          <p
+            onClick={() => toast.success("Hey 👋")}
+            className="hover:underline cursor-pointer z-[1000]"
+          >
+            Biswajit Sahoo
+          </p>
         </span>
       </div>
     </footer>
